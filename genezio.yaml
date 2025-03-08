@@ -1,0 +1,32 @@
+name: Langgraph-agent
+region: us-east-1
+yamlVersion: 2
+
+backend:
+  path: server
+  language:
+    name: js
+    packageManager: npm
+  environment:
+    EXECUTOR_URL: ${{ backend.functions.executor.url }}
+  functions:
+    - name: agent
+      path: ./agent
+      entry: index.js
+      type: httpServer
+
+    - name: executor
+      path: ./executor
+      entry: index.js
+      maxConcurrentRequestsPerInstance: 1
+      type: httpServer
+
+frontend:
+  environment:
+    VITE_API_URL: ${{ backend.functions.agent.url }}
+  path: client
+  publish: dist
+  scripts:
+    build: npm run build
+    deploy: npm install
+  subdomain: bronze-forthcoming-alpaca

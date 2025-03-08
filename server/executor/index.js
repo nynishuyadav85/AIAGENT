@@ -28,6 +28,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use(cors({ origin: '*' }))
+res.header("Access-Control-Allow-Origin", "*")
 
 app.post("/", async (req, res) => {
     const { code } = req.body;
